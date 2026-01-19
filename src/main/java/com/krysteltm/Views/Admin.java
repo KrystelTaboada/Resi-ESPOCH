@@ -4,6 +4,10 @@
  */
 package com.krysteltm.Views;
 
+import com.krysteltm.MODEL.Estudiante;
+import com.krysteltm.MODEL.Usuario;
+import com.krysteltm.SERVICE.EstudianteService;
+
 /**
  *
  * @author KRYSTEL
@@ -11,12 +15,21 @@ package com.krysteltm.Views;
 public class Admin extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Admin.class.getName());
-
+    private Usuario usuario;
+    EstudianteService estudianteService;
+    Estudiante estudiante;
+    
     /**
      * Creates new form Admin
+     * @param usuario
      */
-    public Admin() {
+    public Admin(Usuario usuario) {
         initComponents();
+        this.usuario = usuario;
+        this.estudianteService = new EstudianteService();
+        this.estudiante = estudianteService.buscarPorCorreo(usuario.getUsuario());
+    }
+    public Admin() {
     }
 
     /**

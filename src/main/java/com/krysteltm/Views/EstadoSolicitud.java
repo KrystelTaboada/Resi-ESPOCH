@@ -83,8 +83,10 @@ public class EstadoSolicitud extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
         jLabel2.setText("SU SOLICITUD SE ENCUENTRA EN :");
 
+        EstadoSolicitud.setEditable(false);
         EstadoSolicitud.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
 
+        MensajeEstado.setEditable(false);
         MensajeEstado.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         MensajeEstado.addActionListener(this::MensajeEstadoActionPerformed);
 

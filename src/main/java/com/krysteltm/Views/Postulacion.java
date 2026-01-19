@@ -77,6 +77,9 @@ public class Postulacion extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
         jLabel2.setText("TU SOLICITUD PARA RESIDENCIA EN :");
 
+        Carrera.setEditable(false);
+
+        Facultad.setEditable(false);
         Facultad.addActionListener(this::FacultadActionPerformed);
 
         jLabel3.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N

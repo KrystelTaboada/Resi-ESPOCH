@@ -25,9 +25,9 @@ public class EstudianteInfo extends javax.swing.JFrame {
      */
     public EstudianteInfo(Usuario usuario) {
         initComponents();
+        this.usuario = usuario;
         this.estudianteService = new EstudianteService();
         this.estudiante = estudianteService.buscarPorCorreo(usuario.getUsuario());
-        this.usuario = usuario;
     }
 
     private EstudianteInfo() {

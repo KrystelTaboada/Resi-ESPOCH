@@ -177,7 +177,7 @@ public class Login extends javax.swing.JFrame {
         if (u != null) {
             if (u.getRol().equals("ADMIN")) {
                 IO.println("Usuario admministrador");
-                new Admin().setVisible(true);
+                new UserAdmin(u).setVisible(true);
             } else {
                 IO.println("Usuario Estudiante");
                 new EstudianteInfo(u).setVisible(true);

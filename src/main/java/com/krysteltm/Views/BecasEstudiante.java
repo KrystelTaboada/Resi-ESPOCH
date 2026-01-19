@@ -98,6 +98,7 @@ public class BecasEstudiante extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jLabel2.setText("BECA");
 
+        EstadoBeca2.setEditable(false);
         EstadoBeca2.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         EstadoBeca2.addActionListener(this::EstadoBeca2ActionPerformed);
 
@@ -134,6 +135,13 @@ public class BecasEstudiante extends javax.swing.JFrame {
         jLabel6.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
         jLabel6.setText("BECA ACTIVA:");
 
+        Facultad.setEditable(false);
+
+        Semestre.setEditable(false);
+
+        Carrera.setEditable(false);
+
+        EstadoBeca3.setEditable(false);
         EstadoBeca3.addActionListener(this::EstadoBeca3ActionPerformed);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
