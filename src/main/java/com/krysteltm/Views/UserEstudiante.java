@@ -5,13 +5,14 @@
 package com.krysteltm.Views;
 
 import com.krysteltm.MODEL.Estudiante;
+import com.krysteltm.UTIL.Theme;
 
 /**
  *
  * @author KRYSTEL
  */
 public class UserEstudiante extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(UserEstudiante.class.getName());
     private Estudiante estudiante;
     /**
@@ -28,9 +29,35 @@ public class UserEstudiante extends javax.swing.JFrame {
         FacuEstu.setText(estudiante.getFacultad());
         SemestreEstu.setText(estudiante.getSemestre());
         NombreEstu.setText(estudiante.getNombre());
+        aplicarEstilo();
     }
 
     private UserEstudiante() {
+        initComponents();
+        aplicarEstilo();
+    }
+
+    private void aplicarEstilo() {
+        setTitle("RESI-ESPOCH · Mis datos");
+        setLocationRelativeTo(null);
+        Theme.applyAppIcon(this);
+
+        jPanel1.setBackground(Theme.BACKGROUND);
+        Theme.installGradient(jPanel2, Theme.PRIMARY, Theme.PRIMARY_DARK);
+        jLabel1.setFont(jLabel1.getFont().deriveFont(java.awt.Font.BOLD, 22f));
+        jLabel1.setForeground(java.awt.Color.WHITE);
+
+        for (javax.swing.JLabel l : new javax.swing.JLabel[]{jLabel2, jLabel3, jLabel4, jLabel5, jLabel6, jLabel7, jLabel8}) {
+            l.setFont(l.getFont().deriveFont(java.awt.Font.BOLD, 12f));
+            l.setForeground(Theme.TEXT_SECONDARY);
+        }
+
+        for (javax.swing.JTextField f : new javax.swing.JTextField[]{CIestudiante, NombreEstu, apellido, FacuEstu, SemestreEstu, carrera, PromedioEstu}) {
+            f.setBackground(Theme.SURFACE_ALT);
+            f.setForeground(Theme.TEXT_PRIMARY);
+            f.setFont(f.getFont().deriveFont(java.awt.Font.PLAIN, 14f));
+            f.setEditable(false);
+        }
     }
 
     /**
@@ -64,7 +91,7 @@ public class UserEstudiante extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jPanel2.setBackground(new java.awt.Color(0, 102, 102));
+        jPanel2.setBackground(new java.awt.Color(153, 0, 0));
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));

@@ -7,6 +7,7 @@ package com.krysteltm.Views;
 import com.krysteltm.MODEL.Estudiante;
 import com.krysteltm.MODEL.Usuario;
 import com.krysteltm.SERVICE.EstudianteService;
+import com.krysteltm.UTIL.Theme;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
@@ -15,12 +16,14 @@ import javax.swing.table.DefaultTableModel;
  * @author KRYSTEL
  */
 public class UserAdmin extends javax.swing.JFrame {
-    
+    private static final int TOTAL_CUPOS = 500;
+    private EstudianteService estudianteService;
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(UserAdmin.class.getName());
     private Usuario usuario;
-    EstudianteService estudianteService;
+
     List<Estudiante> estudiantes;
-    
+
     /**
      * Creates new form UserAdmin
      */
@@ -35,10 +38,111 @@ public class UserAdmin extends javax.swing.JFrame {
         espera.setText(String.valueOf(this.obtenerRevision()));
         txtAdmin.setText(this.usuario.getUsuario());
         this.cargarEstudiantesEnTabla(estudiantes);
+        cargarResumen();
+        aplicarEstilo();
+    }
+
+    private void aplicarEstilo() {
+        setTitle("RESI-ESPOCH · Administración");
+        setLocationRelativeTo(null);
+        Theme.applyAppIcon(this);
+
+        jPanel1.setBackground(Theme.BACKGROUND);
+
+        Theme.installGradient(jPanel2, Theme.PRIMARY, Theme.PRIMARY_DARK);
+        jLabel1.setFont(jLabel1.getFont().deriveFont(java.awt.Font.BOLD, 26f));
+        jLabel1.setForeground(java.awt.Color.WHITE);
+        styleHeaderAction(btnActualizar, "Actualizar");
+        btnActualizar.setIcon(Theme.icon("refresh", 14, Theme.PRIMARY));
+
+        Theme.installGradient(jPanel7, Theme.PRIMARY_DARK, new java.awt.Color(0x5A, 0x10, 0x10));
+        jLabel10.setFont(jLabel10.getFont().deriveFont(java.awt.Font.BOLD, 28f));
+        jLabel10.setForeground(java.awt.Color.WHITE);
+        jLabel11.setFont(jLabel11.getFont().deriveFont(java.awt.Font.BOLD, 13f));
+        jLabel11.setForeground(new java.awt.Color(0xF0, 0xC8, 0xC8));
+        txtAdmin.setFont(txtAdmin.getFont().deriveFont(java.awt.Font.BOLD, 16f));
+        txtAdmin.setForeground(java.awt.Color.WHITE);
+        styleSidebarButton(jButton1);
+        jButton1.setIcon(Theme.icon("log-out", 16, java.awt.Color.WHITE));
+        styleSidebarToggle(jToggleButton2);
+        jToggleButton2.setIcon(Theme.icon("list-checks", 16, java.awt.Color.WHITE));
+
+        styleStatCard(jPanel3, jLabel2, Postulantes, postulacion, Theme.INFO);
+        Postulantes.setText("POSTULANTES");
+        styleStatCard(jPanel4, jLabel6, jLabel9, residencias, Theme.SUCCESS);
+        styleStatCard(jPanel5, jLabel5, jLabel7, cupos, Theme.ACCENT);
+        styleStatCard(jPanel6, jLabel8, jLabel4, espera, Theme.WARNING);
+
+        jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(Theme.BORDER, 1, true));
+        jTable1.setRowHeight(34);
+        jTable1.setShowGrid(false);
+        jTable1.setIntercellSpacing(new java.awt.Dimension(0, 0));
+        jTable1.getTableHeader().setReorderingAllowed(false);
+        jTable1.getTableHeader().setFont(jTable1.getTableHeader().getFont().deriveFont(java.awt.Font.BOLD, 13f));
+        int estadoCol = jTable1.getColumnModel().getColumnCount() - 1;
+        jTable1.getColumnModel().getColumn(estadoCol).setCellRenderer(Theme.statusBadgeRenderer());
+    }
+
+    private void styleHeaderAction(javax.swing.JButton btn, String text) {
+        btn.setText(text);
+        btn.setBackground(java.awt.Color.WHITE);
+        btn.setForeground(Theme.PRIMARY);
+        btn.setFont(btn.getFont().deriveFont(java.awt.Font.BOLD, 13f));
+        btn.setBorderPainted(false);
+        btn.setFocusPainted(false);
+        btn.putClientProperty("JButton.buttonType", "roundRect");
+    }
+
+    private void styleSidebarButton(javax.swing.JButton btn) {
+        btn.setBackground(new java.awt.Color(0x5A, 0x10, 0x10));
+        btn.setForeground(java.awt.Color.WHITE);
+        btn.setFont(btn.getFont().deriveFont(java.awt.Font.BOLD, 13f));
+        btn.setBorderPainted(false);
+        btn.setFocusPainted(false);
+        btn.putClientProperty("JButton.buttonType", "roundRect");
+    }
+
+    private void styleSidebarToggle(javax.swing.JToggleButton btn) {
+        btn.setBackground(new java.awt.Color(0x5A, 0x10, 0x10));
+        btn.setForeground(java.awt.Color.WHITE);
+        btn.setFont(btn.getFont().deriveFont(java.awt.Font.BOLD, 13f));
+        btn.setBorderPainted(false);
+        btn.setFocusPainted(false);
+        btn.putClientProperty("JButton.buttonType", "roundRect");
+    }
+
+    private void styleStatCard(javax.swing.JPanel panel, javax.swing.JLabel title, javax.swing.JLabel subtitle,
+                               javax.swing.JTextField value, java.awt.Color accent) {
+        panel.setBackground(Theme.SURFACE);
+        panel.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+                javax.swing.BorderFactory.createMatteBorder(0, 4, 0, 0, accent),
+                javax.swing.BorderFactory.createCompoundBorder(
+                        javax.swing.BorderFactory.createLineBorder(Theme.BORDER, 1, true),
+                        javax.swing.BorderFactory.createEmptyBorder(8, 12, 8, 12)
+                )
+        ));
+        title.setFont(title.getFont().deriveFont(java.awt.Font.BOLD, 12f));
+        title.setForeground(Theme.TEXT_SECONDARY);
+        subtitle.setFont(subtitle.getFont().deriveFont(java.awt.Font.BOLD, 13f));
+        subtitle.setForeground(Theme.TEXT_PRIMARY);
+        value.setBackground(Theme.SURFACE);
+        value.setForeground(accent);
+        value.setFont(value.getFont().deriveFont(java.awt.Font.BOLD, 32f));
+        value.setBorder(javax.swing.BorderFactory.createEmptyBorder());
     }
     
-    public UserAdmin(){}
-    
+    private void cargarResumen() {
+        int postulantes = estudianteService.contarPorEstado("PENDIENTE");
+        int enResidencia = estudianteService.contarPorEstado("APROBADA");
+        int enEspera = estudianteService.contarPorEstado("REVISION");
+        int disponibles = estudianteService.obtenerCuposDisponibles(TOTAL_CUPOS);
+
+        postulacion.setText(String.valueOf(postulantes));
+        residencias.setText(String.valueOf(enResidencia));
+        cupos.setText(String.valueOf(disponibles));
+        espera.setText(String.valueOf(enEspera));
+    }
+
     private int obtenerNumeroSolicitudes() {
         return (int) estudiantes.stream()
             .filter(e -> "PENDIENTE".equals(e.getEstadoSolicitud()))
@@ -71,7 +175,7 @@ public class UserAdmin extends javax.swing.JFrame {
         for (Estudiante e : estudiantes) {
             modelo.addRow(new Object[]{
                 e.getCedula(),
-                e.getNombre(),
+                e.getNombreCompleto(),
                 e.getCarrera(),
                 e.getFacultad(),
                 e.getBeca(),
@@ -98,7 +202,7 @@ public class UserAdmin extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        Postulantes = new javax.swing.JLabel();
         postulacion = new javax.swing.JTextField();
         jPanel4 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
@@ -162,9 +266,9 @@ public class UserAdmin extends javax.swing.JFrame {
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("ESTUDIANTES");
 
-        jLabel3.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setText("POSTULANTES");
+        Postulantes.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
+        Postulantes.setForeground(new java.awt.Color(255, 255, 255));
+        Postulantes.setText("POSTULANTES");
 
         postulacion.setEditable(false);
         postulacion.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
@@ -182,7 +286,7 @@ public class UserAdmin extends javax.swing.JFrame {
                 .addGap(22, 22, 22)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel2)
-                    .addComponent(jLabel3))
+                    .addComponent(Postulantes))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -191,7 +295,7 @@ public class UserAdmin extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3)
+                .addComponent(Postulantes)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(postulacion, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -285,13 +389,15 @@ public class UserAdmin extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jPanel2.setBackground(new java.awt.Color(0, 102, 102));
+        jPanel2.setBackground(new java.awt.Color(153, 0, 0));
+        jPanel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 0, 0)));
 
+        jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setFont(new java.awt.Font("Arial Black", 0, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("ADMINISTRADOR");
 
-        btnActualizar.setBackground(new java.awt.Color(0, 102, 102));
+        btnActualizar.setBackground(new java.awt.Color(153, 0, 0));
         btnActualizar.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
         btnActualizar.setForeground(new java.awt.Color(255, 255, 255));
         btnActualizar.setText("Actualizar");
@@ -319,21 +425,21 @@ public class UserAdmin extends javax.swing.JFrame {
                 .addContainerGap(25, Short.MAX_VALUE))
         );
 
-        jPanel7.setBackground(new java.awt.Color(0, 102, 102));
+        jPanel7.setBackground(new java.awt.Color(153, 0, 0));
 
         jLabel10.setFont(new java.awt.Font("Arial Black", 0, 36)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel10.setText("MENÚ");
 
-        jButton1.setBackground(new java.awt.Color(0, 102, 102));
+        jButton1.setBackground(new java.awt.Color(153, 0, 0));
         jButton1.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("CERRAR SESIÓN");
-        jButton1.setBorder(null);
+        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         jButton1.addActionListener(this::jButton1ActionPerformed);
 
-        jToggleButton2.setBackground(new java.awt.Color(0, 102, 102));
+        jToggleButton2.setBackground(new java.awt.Color(153, 0, 0));
         jToggleButton2.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
         jToggleButton2.setForeground(new java.awt.Color(255, 255, 255));
         jToggleButton2.setText("GESTIÓN DE SOLICITUDES");
@@ -509,11 +615,11 @@ public class UserAdmin extends javax.swing.JFrame {
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         this.estudiantes = estudianteService.obtenerEstudiantes();
         postulacion.setText(String.valueOf(this.obtenerNumeroSolicitudes()));
-        cupos.setText("500");
         residencias.setText(String.valueOf(this.obtenerAprobados()));
         espera.setText(String.valueOf(this.obtenerRevision()));
         txtAdmin.setText(this.usuario.getUsuario());
         this.cargarEstudiantesEnTabla(estudiantes);
+        cargarResumen();
     }//GEN-LAST:event_btnActualizarActionPerformed
 
     private void cuposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cuposActionPerformed
@@ -524,28 +630,15 @@ public class UserAdmin extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new UserAdmin().setVisible(true));
+        java.awt.EventQueue.invokeLater(() -> {
+        Usuario admin = new Usuario();
+        admin.setUsuario("ADMIN"); // o cualquier nombre de prueba
+        new UserAdmin(admin).setVisible(true);
+    });
     }
-
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel Postulantes;
     private javax.swing.JButton btnActualizar;
     private javax.swing.JTextField cupos;
     private javax.swing.JTextField espera;
@@ -555,7 +648,6 @@ public class UserAdmin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;

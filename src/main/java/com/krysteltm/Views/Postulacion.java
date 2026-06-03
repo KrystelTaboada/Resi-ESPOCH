@@ -5,6 +5,8 @@
 package com.krysteltm.Views;
 
 import com.krysteltm.MODEL.Estudiante;
+import com.krysteltm.SERVICE.EstudianteService;
+import com.krysteltm.UTIL.Theme;
 import javax.swing.JOptionPane;
 
 /**
@@ -12,10 +14,13 @@ import javax.swing.JOptionPane;
  * @author KRYSTEL
  */
 public class Postulacion extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Postulacion.class.getName());
     private Estudiante estudiante;
-    
+    private EstudianteService estudianteService;
+    private String correo;
+
+
     /**
      * Creates new form Postulacion
      * @param estudiante
@@ -25,8 +30,47 @@ public class Postulacion extends javax.swing.JFrame {
         this.estudiante = estudiante;
         Carrera.setText(estudiante.getCarrera());
         Facultad.setText(estudiante.getFacultad());
+        estudianteService = new EstudianteService();
+        correo = estudiante.getCorreo();
+        aplicarEstilo();
     }
     public Postulacion() {
+        initComponents();
+        aplicarEstilo();
+    }
+
+    private void aplicarEstilo() {
+        setTitle("RESI-ESPOCH · Postulación");
+        setLocationRelativeTo(null);
+        Theme.applyAppIcon(this);
+
+        jPanel1.setBackground(Theme.BACKGROUND);
+        Theme.installGradient(jPanel2, Theme.PRIMARY, Theme.PRIMARY_DARK);
+        jLabel1.setFont(jLabel1.getFont().deriveFont(java.awt.Font.BOLD, 22f));
+        jLabel1.setForeground(java.awt.Color.WHITE);
+
+        jLabel2.setFont(jLabel2.getFont().deriveFont(java.awt.Font.BOLD, 16f));
+        jLabel2.setForeground(Theme.TEXT_PRIMARY);
+        jLabel3.setFont(jLabel3.getFont().deriveFont(java.awt.Font.BOLD, 14f));
+        jLabel3.setForeground(Theme.TEXT_SECONDARY);
+
+        styleReadOnly(Carrera);
+        styleReadOnly(Facultad);
+
+        btnPostular.setBackground(Theme.PRIMARY);
+        btnPostular.setForeground(java.awt.Color.WHITE);
+        btnPostular.setFont(btnPostular.getFont().deriveFont(java.awt.Font.BOLD, 15f));
+        btnPostular.setBorderPainted(false);
+        btnPostular.setFocusPainted(false);
+        btnPostular.putClientProperty("JButton.buttonType", "roundRect");
+    }
+
+    private void styleReadOnly(javax.swing.JTextField field) {
+        field.setBackground(Theme.SURFACE_ALT);
+        field.setForeground(Theme.TEXT_PRIMARY);
+        field.setFont(field.getFont().deriveFont(java.awt.Font.PLAIN, 14f));
+        field.setEditable(false);
+        field.putClientProperty("JComponent.outline", Theme.BORDER);
     }
 
     /**
@@ -51,7 +95,7 @@ public class Postulacion extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jPanel2.setBackground(new java.awt.Color(0, 102, 102));
+        jPanel2.setBackground(new java.awt.Color(153, 0, 0));
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -85,7 +129,7 @@ public class Postulacion extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
         jLabel3.setText("EDIFICIO: ");
 
-        btnPostular.setBackground(new java.awt.Color(0, 102, 102));
+        btnPostular.setBackground(new java.awt.Color(153, 0, 0));
         btnPostular.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
         btnPostular.setForeground(new java.awt.Color(255, 255, 255));
         btnPostular.setText("POSTULAR EN RESIDENCIA");
@@ -153,9 +197,42 @@ public class Postulacion extends javax.swing.JFrame {
     private void FacultadActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FacultadActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_FacultadActionPerformed
+    private void cargarEstado() {
+        estudiante = estudianteService.buscarPorCorreo(correo);
+        
+        if (!estudiante.getEstadoSolicitud().equalsIgnoreCase("NO POSTULADO")) {
+            btnPostular.setEnabled(false); // bloquear botón
+        }
+    }
 
     private void btnPostularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPostularActionPerformed
-        JOptionPane.showMessageDialog(this, "Su solicitud ha sido enviada, Consulte novedades con su secretaria");
+         int opcion = JOptionPane.showConfirmDialog(
+        this,
+        "¿Desea postular a la residencia?",
+        "Confirmación",
+        JOptionPane.YES_NO_OPTION
+    );
+
+    if (opcion != JOptionPane.YES_OPTION) return;
+
+    boolean ok = estudianteService.actualizarEstadoSolicitud(
+        estudiante.getCedula(),
+        "PENDIENTE"
+    );
+
+    if (ok) {
+        //actualizar objeto en memoria
+        estudiante.setEstadoSolicitud("PENDIENTE");
+
+        // ()actualizar pantalla automáticamente
+        cargarEstado();
+
+        JOptionPane.showMessageDialog(this,
+            "Postulación enviada correctamente",
+            "Éxito",
+            JOptionPane.INFORMATION_MESSAGE
+        );
+    }
     }//GEN-LAST:event_btnPostularActionPerformed
 
     /**

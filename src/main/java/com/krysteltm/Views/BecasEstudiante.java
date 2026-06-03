@@ -5,13 +5,14 @@
 package com.krysteltm.Views;
 
 import com.krysteltm.MODEL.Estudiante;
+import com.krysteltm.UTIL.Theme;
 
 /**
  *
  * @author KRYSTEL
  */
 public class BecasEstudiante extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(BecasEstudiante.class.getName());
     private Estudiante estudiante;
 
@@ -27,9 +28,46 @@ public class BecasEstudiante extends javax.swing.JFrame {
         Facultad.setText(estudiante.getFacultad());
         Carrera.setText(estudiante.getCarrera());
         Semestre.setText(estudiante.getSemestre());
+        aplicarEstilo();
     }
-    
+
     public BecasEstudiante() {
+        initComponents();
+        aplicarEstilo();
+    }
+
+    private void aplicarEstilo() {
+        setTitle("RESI-ESPOCH · Becas");
+        setLocationRelativeTo(null);
+        Theme.applyAppIcon(this);
+
+        jPanel1.setBackground(Theme.BACKGROUND);
+        Theme.installGradient(jPanel2, Theme.PRIMARY, Theme.PRIMARY_DARK);
+        jLabel1.setFont(jLabel1.getFont().deriveFont(java.awt.Font.BOLD, 22f));
+        jLabel1.setForeground(java.awt.Color.WHITE);
+
+        jPanel3.setBackground(Theme.SURFACE);
+        jPanel3.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+                javax.swing.BorderFactory.createMatteBorder(0, 4, 0, 0, Theme.ACCENT),
+                javax.swing.BorderFactory.createCompoundBorder(
+                        javax.swing.BorderFactory.createLineBorder(Theme.BORDER, 1, true),
+                        javax.swing.BorderFactory.createEmptyBorder(20, 24, 20, 24)
+                )
+        ));
+
+        for (javax.swing.JLabel l : new javax.swing.JLabel[]{jLabel2, jLabel3, jLabel4, jLabel5, jLabel6}) {
+            l.setFont(l.getFont().deriveFont(java.awt.Font.BOLD, 13f));
+            l.setForeground(Theme.TEXT_SECONDARY);
+        }
+
+        for (javax.swing.JTextField f : new javax.swing.JTextField[]{EstadoBeca2, EstadoBeca3, Facultad, Semestre, Carrera}) {
+            f.setBackground(Theme.SURFACE_ALT);
+            f.setForeground(Theme.TEXT_PRIMARY);
+            f.setFont(f.getFont().deriveFont(java.awt.Font.PLAIN, 14f));
+            f.setEditable(false);
+        }
+        EstadoBeca2.setFont(EstadoBeca2.getFont().deriveFont(java.awt.Font.BOLD, 18f));
+        EstadoBeca2.setForeground(Theme.ACCENT);
     }
     
     public String MensajeBeca(String beca){
@@ -69,7 +107,7 @@ public class BecasEstudiante extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jPanel2.setBackground(new java.awt.Color(0, 102, 102));
+        jPanel2.setBackground(new java.awt.Color(153, 0, 0));
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));

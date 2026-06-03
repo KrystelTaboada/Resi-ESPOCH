@@ -5,16 +5,18 @@
 package com.krysteltm.Views;
 
 import com.krysteltm.MODEL.Estudiante;
+import com.krysteltm.UTIL.Theme;
 
 /**
  *
  * @author KRYSTEL
  */
 public class EstadoSolicitud extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(EstadoSolicitud.class.getName());
     private Estudiante estudiante;
-    
+    private javax.swing.JLabel lblEstado;
+
     /**
      * Creates new form EstadoSolicitud
      * @param estudiante
@@ -24,8 +26,53 @@ public class EstadoSolicitud extends javax.swing.JFrame {
         this.estudiante = estudiante;
         EstadoSolicitud.setText(estudiante.getEstadoSolicitud());
         MensajeEstado.setText(MensajeBeca(estudiante.getEstadoSolicitud()));
+        aplicarEstilo();
     }
     public EstadoSolicitud() {
+        initComponents();
+        aplicarEstilo();
+    }
+
+    private void aplicarEstilo() {
+        setTitle("RESI-ESPOCH · Estado de solicitud");
+        setLocationRelativeTo(null);
+        Theme.applyAppIcon(this);
+
+        jPanel1.setBackground(Theme.BACKGROUND);
+        Theme.installGradient(jPanel2, Theme.PRIMARY, Theme.PRIMARY_DARK);
+        jLabel1.setFont(jLabel1.getFont().deriveFont(java.awt.Font.BOLD, 22f));
+        jLabel1.setForeground(java.awt.Color.WHITE);
+
+        jLabel2.setFont(jLabel2.getFont().deriveFont(java.awt.Font.BOLD, 14f));
+        jLabel2.setForeground(Theme.TEXT_SECONDARY);
+
+        java.awt.Color accent = colorPorEstado(EstadoSolicitud.getText());
+
+        EstadoSolicitud.setBackground(Theme.SURFACE);
+        EstadoSolicitud.setForeground(accent);
+        EstadoSolicitud.setFont(EstadoSolicitud.getFont().deriveFont(java.awt.Font.BOLD, 22f));
+        EstadoSolicitud.setEditable(false);
+        EstadoSolicitud.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        EstadoSolicitud.setBorder(javax.swing.BorderFactory.createCompoundBorder(
+                javax.swing.BorderFactory.createLineBorder(accent, 2, true),
+                javax.swing.BorderFactory.createEmptyBorder(8, 16, 8, 16)
+        ));
+
+        MensajeEstado.setBackground(Theme.SURFACE_ALT);
+        MensajeEstado.setForeground(Theme.TEXT_PRIMARY);
+        MensajeEstado.setFont(MensajeEstado.getFont().deriveFont(java.awt.Font.PLAIN, 14f));
+        MensajeEstado.setEditable(false);
+    }
+
+    private java.awt.Color colorPorEstado(String estado) {
+        if (estado == null) return Theme.NEUTRAL;
+        switch (estado.toUpperCase()) {
+            case "APROBADA": return Theme.SUCCESS;
+            case "RECHAZADA": return Theme.ERROR;
+            case "PENDIENTE": return Theme.WARNING;
+            case "REVISION": return Theme.INFO;
+            default: return Theme.NEUTRAL;
+        }
     }
     
     public String MensajeBeca(String estado){
@@ -33,6 +80,8 @@ public class EstadoSolicitud extends javax.swing.JFrame {
             case "APROBADA" : return "Felicidades su beca ha sido aprobada";
             case "PENDIENTE" : return "Su Beca esta en proceso de revisión";
             case "RECHAZADA" : return "Lo sentimos, su beca ha sido rechazada";
+            case "REVISION" : return "Su solicitud se encuentra siendo revisada";
+            case "NO_POSTULADO" : return "Usted no ha postulado";
             default: return "Ops, no hemos podido encontrar el estado de tu beca comunicate con el Administrador";
         }
     }
@@ -57,7 +106,7 @@ public class EstadoSolicitud extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jPanel2.setBackground(new java.awt.Color(0, 102, 102));
+        jPanel2.setBackground(new java.awt.Color(153, 0, 0));
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));

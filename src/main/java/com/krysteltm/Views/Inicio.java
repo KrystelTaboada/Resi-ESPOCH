@@ -4,12 +4,14 @@
  */
 package com.krysteltm.Views;
 
+import com.krysteltm.UTIL.Theme;
+
 /**
  *
  * @author KRYSTEL
  */
 public class Inicio extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Inicio.class.getName());
 
     /**
@@ -17,6 +19,101 @@ public class Inicio extends javax.swing.JFrame {
      */
     public Inicio() {
         initComponents();
+        aplicarEstilo();
+    }
+
+    private void aplicarEstilo() {
+        setTitle("RESI-ESPOCH");
+        setLocationRelativeTo(null);
+        Theme.applyAppIcon(this);
+
+        jPanel1.setBackground(Theme.BACKGROUND);
+
+        Theme.installGradient(jPanel2, Theme.PRIMARY, Theme.PRIMARY_DARK);
+        jPanel2.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+
+        int panelW = 900;
+
+        jLabel1.setFont(jLabel1.getFont().deriveFont(java.awt.Font.BOLD, 72f));
+        jLabel1.setForeground(java.awt.Color.WHITE);
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jPanel2.remove(jLabel1);
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, panelW, -1));
+
+        int y = 220;
+        for (javax.swing.JLabel l : new javax.swing.JLabel[]{jLabel4, jLabel5, jLabel6}) {
+            l.setFont(l.getFont().deriveFont(java.awt.Font.PLAIN, 22f));
+            l.setForeground(new java.awt.Color(0xF5, 0xE6, 0xE6));
+            l.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            jPanel2.remove(l);
+            jPanel2.add(l, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, y, panelW, -1));
+            y += 40;
+        }
+
+        Theme.shadowedButton(jButton1, java.awt.Color.WHITE, Theme.PRIMARY);
+        jButton1.setFont(jButton1.getFont().deriveFont(java.awt.Font.BOLD, 16f));
+        jPanel2.remove(jButton1);
+        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints((panelW - 200) / 2, 430, 200, 50));
+
+        agregarLogo(panelW);
+
+        jPanel2.revalidate();
+        jPanel2.repaint();
+    }
+
+    private void agregarLogo(int panelW) {
+        java.net.URL url = getClass().getResource("/icons/espoch-logo.png");
+        if (url == null) url = getClass().getResource("/icons/espoch-logo.jpg");
+        if (url == null) url = getClass().getResource("/icons/espoch-logo.jpeg");
+        if (url == null) {
+            System.out.println("[Inicio] Logo no encontrado en /icons/");
+            return;
+        }
+        try {
+            java.awt.image.BufferedImage raw = javax.imageio.ImageIO.read(url);
+            if (raw == null) {
+                System.out.println("[Inicio] No se pudo decodificar el logo: " + url);
+                return;
+            }
+            System.out.println("[Inicio] Logo cargado: " + raw.getWidth() + "x" + raw.getHeight());
+
+            java.awt.image.BufferedImage tinted = blackToWhite(raw);
+
+            int logoH = 130;
+            int logoW = (int) (tinted.getWidth() * (logoH / (double) tinted.getHeight()));
+            java.awt.Image scaled = tinted.getScaledInstance(logoW, logoH, java.awt.Image.SCALE_SMOOTH);
+
+            javax.swing.JLabel logo = new javax.swing.JLabel(new javax.swing.ImageIcon(scaled));
+            logo.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+            jPanel2.add(logo, new org.netbeans.lib.awtextra.AbsoluteConstraints((panelW - logoW) / 2, 380, logoW, logoH));
+
+            jPanel2.remove(jButton1);
+            jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints((panelW - 200) / 2, 530, 200, 50));
+        } catch (java.io.IOException e) {
+            System.out.println("[Inicio] Error cargando logo: " + e.getMessage());
+        }
+    }
+
+    private java.awt.image.BufferedImage blackToWhite(java.awt.image.BufferedImage src) {
+        int w = src.getWidth();
+        int h = src.getHeight();
+        java.awt.image.BufferedImage out = new java.awt.image.BufferedImage(w, h, java.awt.image.BufferedImage.TYPE_INT_ARGB);
+        for (int y = 0; y < h; y++) {
+            for (int x = 0; x < w; x++) {
+                int argb = src.getRGB(x, y);
+                int r = (argb >> 16) & 0xff;
+                int g = (argb >> 8) & 0xff;
+                int b = argb & 0xff;
+                int lum = (r + g + b) / 3;
+                if (lum < 180) {
+                    int alpha = (180 - lum) * 255 / 180;
+                    out.setRGB(x, y, (alpha << 24) | 0x00FFFFFF);
+                } else {
+                    out.setRGB(x, y, 0x00000000);
+                }
+            }
+        }
+        return out;
     }
 
     /**
@@ -43,58 +140,56 @@ public class Inicio extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        jPanel2.setBackground(new java.awt.Color(0, 102, 102));
-        jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 102, 102), 25, true));
+        jPanel2.setBackground(new java.awt.Color(153, 0, 0));
+        jPanel2.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(153, 0, 0), 25, true));
+        jPanel2.setForeground(new java.awt.Color(153, 0, 0));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel1.setFont(new java.awt.Font("Arial Black", 0, 80)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Arial Black", 0, 85)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("RESI-ESPOCH");
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 60, -1, 118));
+        jPanel2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 60, -1, 118));
         jPanel2.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(730, 460, -1, 106));
         jPanel2.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(205, 31, 742, -1));
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("SISTEMA DE RESIDENCIA ESTUDIANTIL DE LA");
-        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 180, -1, -1));
+        jPanel2.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 200, -1, -1));
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("ESCUELA SUPERIOR POLITÉCNICA DE");
-        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 230, -1, -1));
+        jPanel2.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 260, -1, -1));
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 36)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("CHIMBORAZO");
-        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 280, -1, -1));
+        jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 320, -1, -1));
 
         jButton1.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(0, 102, 102));
+        jButton1.setForeground(new java.awt.Color(153, 0, 0));
         jButton1.setText("CONTINUAR");
         jButton1.addActionListener(this::jButton1ActionPerformed);
-        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 390, 170, 50));
+        jPanel2.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 420, 170, 50));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 825, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(38, Short.MAX_VALUE))
+            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 900, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(52, 52, 52)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(68, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 666, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 600));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -10, 900, 610));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

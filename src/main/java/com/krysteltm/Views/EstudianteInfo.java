@@ -7,13 +7,14 @@ package com.krysteltm.Views;
 import com.krysteltm.MODEL.Estudiante;
 import com.krysteltm.MODEL.Usuario;
 import com.krysteltm.SERVICE.EstudianteService;
+import com.krysteltm.UTIL.Theme;
 
 /**
  *
  * @author KRYSTEL
  */
 public class EstudianteInfo extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(EstudianteInfo.class.getName());
     private Usuario usuario;
     EstudianteService estudianteService;
@@ -28,9 +29,40 @@ public class EstudianteInfo extends javax.swing.JFrame {
         this.usuario = usuario;
         this.estudianteService = new EstudianteService();
         this.estudiante = estudianteService.buscarPorCorreo(usuario.getUsuario());
+        aplicarEstilo();
     }
 
     private EstudianteInfo() {
+        initComponents();
+        aplicarEstilo();
+    }
+
+    private void aplicarEstilo() {
+        setTitle("RESI-ESPOCH · Panel del estudiante");
+        setLocationRelativeTo(null);
+        Theme.applyAppIcon(this);
+
+        jPanel1.setBackground(Theme.BACKGROUND);
+        jPanel2.setBackground(Theme.BACKGROUND);
+
+        Theme.installGradient(jPanel3, Theme.PRIMARY, Theme.PRIMARY_DARK);
+        jLabel1.setFont(jLabel1.getFont().deriveFont(java.awt.Font.BOLD, 20f));
+        jLabel1.setForeground(java.awt.Color.WHITE);
+
+        jButton1.setBackground(Theme.PRIMARY_DARK);
+        jButton1.setForeground(java.awt.Color.WHITE);
+        jButton1.setFont(jButton1.getFont().deriveFont(java.awt.Font.BOLD, 12f));
+        jButton1.setFocusPainted(false);
+        jButton1.setBorderPainted(false);
+        jButton1.putClientProperty("JButton.buttonType", "roundRect");
+
+        Theme.asTile(Datos, Theme.icon("user", 36, Theme.ACCENT), Theme.ACCENT);
+        Datos.setText("MIS DATOS");
+        Theme.asTile(POSTULACION, Theme.icon("file-text", 36, Theme.PRIMARY), Theme.PRIMARY);
+        Theme.asTile(BECAS, Theme.icon("award", 36, Theme.INFO), Theme.INFO);
+        Theme.asTile(ESTADODESOLICITUD, Theme.icon("list-checks", 36, Theme.WARNING), Theme.WARNING);
+
+        jButton1.setIcon(Theme.icon("log-out", 14, java.awt.Color.WHITE));
     }
     
     /**
@@ -56,13 +88,13 @@ public class EstudianteInfo extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        jPanel3.setBackground(new java.awt.Color(0, 102, 102));
+        jPanel3.setBackground(new java.awt.Color(153, 0, 0));
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Sistema de Residencia Estudiantil ESPOCH");
 
-        jButton1.setBackground(new java.awt.Color(0, 102, 102));
+        jButton1.setBackground(new java.awt.Color(153, 0, 0));
         jButton1.setFont(new java.awt.Font("Arial Black", 0, 12)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.setText("CERRAR SESIÓN");
@@ -75,9 +107,9 @@ public class EstudianteInfo extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(271, 271, 271)
+                .addGap(303, 303, 303)
                 .addComponent(jButton1)
-                .addGap(57, 57, 57))
+                .addGap(25, 25, 25))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -89,25 +121,25 @@ public class EstudianteInfo extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        POSTULACION.setBackground(new java.awt.Color(0, 102, 102));
+        POSTULACION.setBackground(new java.awt.Color(153, 0, 0));
         POSTULACION.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         POSTULACION.setForeground(new java.awt.Color(255, 255, 255));
         POSTULACION.setText("POSTULACIÓN");
         POSTULACION.addActionListener(this::POSTULACIONActionPerformed);
 
-        ESTADODESOLICITUD.setBackground(new java.awt.Color(0, 102, 102));
+        ESTADODESOLICITUD.setBackground(new java.awt.Color(153, 0, 0));
         ESTADODESOLICITUD.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         ESTADODESOLICITUD.setForeground(new java.awt.Color(255, 255, 255));
         ESTADODESOLICITUD.setText("ESTADO DE SOLICITUD");
         ESTADODESOLICITUD.addActionListener(this::ESTADODESOLICITUDActionPerformed);
 
-        BECAS.setBackground(new java.awt.Color(0, 102, 102));
+        BECAS.setBackground(new java.awt.Color(153, 0, 0));
         BECAS.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         BECAS.setForeground(new java.awt.Color(255, 255, 255));
         BECAS.setText("BECAS ESPOCH");
         BECAS.addActionListener(this::BECASActionPerformed);
 
-        Datos.setBackground(new java.awt.Color(0, 102, 102));
+        Datos.setBackground(new java.awt.Color(153, 0, 0));
         Datos.setFont(new java.awt.Font("Arial Black", 0, 24)); // NOI18N
         Datos.setForeground(new java.awt.Color(255, 255, 255));
         Datos.setText("USUARIO");
@@ -117,32 +149,32 @@ public class EstudianteInfo extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(BECAS, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(65, 65, 65)
+                .addComponent(POSTULACION, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(65, 65, 65)
+                .addComponent(ESTADODESOLICITUD, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addComponent(BECAS, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(POSTULACION, javax.swing.GroupLayout.PREFERRED_SIZE, 291, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(53, 53, 53)
-                .addComponent(ESTADODESOLICITUD)
-                .addContainerGap())
-            .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(372, Short.MAX_VALUE)
-                .addComponent(Datos, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(373, 373, 373))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(Datos, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(318, 318, 318))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49)
-                .addComponent(Datos, javax.swing.GroupLayout.PREFERRED_SIZE, 233, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addComponent(Datos, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(BECAS, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(POSTULACION, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(BECAS, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ESTADODESOLICITUD, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(49, 49, 49))
+                .addContainerGap(53, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);

@@ -5,7 +5,8 @@
 package com.krysteltm.Views;
 
 import com.krysteltm.MODEL.Usuario;
- import com.krysteltm.SERVICE.LoginService;
+import com.krysteltm.SERVICE.LoginService;
+import com.krysteltm.UTIL.Theme;
 import javax.swing.JOptionPane;
 
 /**
@@ -13,7 +14,7 @@ import javax.swing.JOptionPane;
  * @author KRYSTEL
  */
 public class Login extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Login.class.getName());
 
 
@@ -22,6 +23,53 @@ public class Login extends javax.swing.JFrame {
      */
     public Login() {
         initComponents();
+        aplicarEstilo();
+    }
+
+    private void aplicarEstilo() {
+        setTitle("RESI-ESPOCH · Inicio de sesión");
+        setLocationRelativeTo(null);
+        Theme.applyAppIcon(this);
+
+        jPanel3.setBackground(Theme.BACKGROUND);
+        Theme.installGradient(jPanel1, Theme.PRIMARY, Theme.PRIMARY_DARK);
+        jLabel1.setFont(jLabel1.getFont().deriveFont(java.awt.Font.BOLD, 22f));
+        jLabel1.setForeground(java.awt.Color.WHITE);
+
+        jPanel2.setBackground(Theme.SURFACE);
+        jPanel2.setBorder(Theme.cardBorderPadded(28, 32, 28, 32));
+
+        jLabel2.setFont(jLabel2.getFont().deriveFont(java.awt.Font.BOLD, 22f));
+        jLabel2.setForeground(Theme.TEXT_PRIMARY);
+
+        for (javax.swing.JLabel lbl : new javax.swing.JLabel[]{jLabel3, jLabel4}) {
+            lbl.setFont(lbl.getFont().deriveFont(java.awt.Font.BOLD, 13f));
+            lbl.setForeground(Theme.TEXT_SECONDARY);
+        }
+
+        txtUsuario.putClientProperty("JTextField.placeholderText", "Ingresa tu usuario");
+        txtUsuario.putClientProperty("JTextField.leadingIcon", Theme.icon("user", 16, Theme.TEXT_SECONDARY));
+        txtUsuario.setFont(txtUsuario.getFont().deriveFont(java.awt.Font.PLAIN, 14f));
+
+        txtPassword.putClientProperty("JTextField.placeholderText", "Ingresa tu contraseña");
+        txtPassword.putClientProperty("JTextField.leadingIcon", Theme.icon("lock", 16, Theme.TEXT_SECONDARY));
+        txtPassword.putClientProperty("JPasswordField.showRevealButton", true);
+        txtPassword.setFont(txtPassword.getFont().deriveFont(java.awt.Font.PLAIN, 14f));
+
+        btnLogin.setBackground(Theme.PRIMARY);
+        btnLogin.setForeground(java.awt.Color.WHITE);
+        btnLogin.setFont(btnLogin.getFont().deriveFont(java.awt.Font.BOLD, 13f));
+        btnLogin.setBorderPainted(false);
+        btnLogin.setFocusPainted(false);
+        btnLogin.setMargin(new java.awt.Insets(6, 8, 6, 8));
+        btnLogin.putClientProperty("FlatLaf.style", "arc: 14; minimumWidth: 0");
+
+        jButton1.setBackground(Theme.SURFACE);
+        jButton1.setForeground(Theme.ACCENT);
+        jButton1.setFont(jButton1.getFont().deriveFont(java.awt.Font.PLAIN, 12f));
+        jButton1.setBorderPainted(false);
+        jButton1.setFocusPainted(false);
+        jButton1.putClientProperty("JButton.buttonType", "borderless");
     }
 
     /**
@@ -35,6 +83,7 @@ public class Login extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         txtUsuario = new javax.swing.JTextField();
@@ -42,13 +91,13 @@ public class Login extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         btnLogin = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jPanel1.setBackground(new java.awt.Color(0, 102, 102));
+        jPanel1.setBackground(new java.awt.Color(153, 0, 0));
 
         jLabel1.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
@@ -59,9 +108,9 @@ public class Login extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(378, Short.MAX_VALUE)
+                .addContainerGap(356, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(332, 332, 332))
+                .addGap(354, 354, 354))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -73,13 +122,16 @@ public class Login extends javax.swing.JFrame {
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 60));
 
-        jPanel2.setBackground(new java.awt.Color(0, 102, 102));
+        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
+
+        jPanel2.setBackground(new java.awt.Color(153, 0, 0));
         jPanel2.setForeground(new java.awt.Color(0, 102, 102));
 
         jLabel2.setFont(new java.awt.Font("Arial Black", 1, 24)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("INICIO DE SESIÓN");
 
+        txtUsuario.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         txtUsuario.addInputMethodListener(new java.awt.event.InputMethodListener() {
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
             }
@@ -89,6 +141,7 @@ public class Login extends javax.swing.JFrame {
         });
         txtUsuario.addActionListener(this::txtUsuarioActionPerformed);
 
+        txtPassword.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         txtPassword.addActionListener(this::txtPasswordActionPerformed);
 
         jLabel3.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
@@ -100,14 +153,26 @@ public class Login extends javax.swing.JFrame {
         jLabel4.setText("CONTRASEÑA: ");
 
         btnLogin.setFont(new java.awt.Font("Arial Black", 0, 14)); // NOI18N
-        btnLogin.setForeground(new java.awt.Color(0, 102, 102));
+        btnLogin.setForeground(new java.awt.Color(153, 0, 0));
         btnLogin.setText("LOGIN");
         btnLogin.addActionListener(this::btnLoginActionPerformed);
+
+        jButton1.setBackground(new java.awt.Color(153, 0, 0));
+        jButton1.setFont(new java.awt.Font("Arial", 0, 12)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("¿OLVIDASTE TU CONTRASEÑA?");
+        jButton1.setBorder(null);
+        jButton1.setFocusable(false);
+        jButton1.addActionListener(this::jButton1ActionPerformed);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(65, Short.MAX_VALUE)
+                .addComponent(jLabel2)
+                .addGap(55, 55, 55))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(36, 36, 36)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -117,13 +182,11 @@ public class Login extends javax.swing.JFrame {
                         .addComponent(txtPassword, javax.swing.GroupLayout.DEFAULT_SIZE, 303, Short.MAX_VALUE))
                     .addComponent(jLabel4))
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(65, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addGap(55, 55, 55))
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(142, 142, 142)
-                .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(37, 37, 37)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButton1)
+                    .addComponent(btnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -139,24 +202,28 @@ public class Login extends javax.swing.JFrame {
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnLogin)
                 .addGap(36, 36, 36))
         );
-
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 140, 370, 390));
-
-        jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 900, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(249, 249, 249)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(281, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(153, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(57, 57, 57))
         );
 
         getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 900, 600));
@@ -176,10 +243,10 @@ public class Login extends javax.swing.JFrame {
 
         if (u != null) {
             if (u.getRol().equals("ADMIN")) {
-                IO.println("Usuario admministrador");
+                System.out.println("Usuario administrador");
                 new UserAdmin(u).setVisible(true);
             } else {
-                IO.println("Usuario Estudiante");
+                System.out.println("Usuario Estudiante");
                 new EstudianteInfo(u).setVisible(true);
             }
             this.dispose();
@@ -195,6 +262,10 @@ public class Login extends javax.swing.JFrame {
     private void txtUsuarioInputMethodTextChanged(java.awt.event.InputMethodEvent evt) {//GEN-FIRST:event_txtUsuarioInputMethodTextChanged
         // TODO add your handling code here:
     }//GEN-LAST:event_txtUsuarioInputMethodTextChanged
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        JOptionPane.showMessageDialog(this, "Acérquese al área de TI por favor.");
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -224,6 +295,7 @@ public class Login extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLogin;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
